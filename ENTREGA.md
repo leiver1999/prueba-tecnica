@@ -1,13 +1,13 @@
 # Resumen de entrega
 
 Nombre o identificador de candidato: Jose Valenciano Herrera
-Fecha: 
-Commit final (si se uso Git):
+Fecha: 29/09/2026
+Commit final (si se uso Git): 
 
 ## Requisitos
-P1:
-P2:
-P3:
+P1: Implementado; se eliminan los espacios al inicio y al final de cliente y descripcion. Si alguno queda vacio, la API responde 400 sin insertar el pedido
+P2: Implementado; el listado permite filtrar por estado. Sin filtro devuelve todos los pedidos; con un estado valido devuelve solo las coincidencias. Un estado vacio o desconocido devuelve 400
+P3: Implementado; se puede actualizar el estado de un pedido y guardar el cambio en SQLite. Devuelve 200 con el pedido actualizado, 400 por estado invalido y 404 si el pedido no existe con una solicitud valida. Los errores de estructura o tipo conservan el 422
 P4: Completado. Se conservan las cuatro pruebas iniciales de test_base.py.
 Se agregaron pruebas de espacios (test_validacion_textos.py), filtro
 (test_filtro.py) y actualizacion (test_actualizacion.py).
@@ -27,6 +27,12 @@ Cambio en vivo:
 
 ## Verificación
 Comandos ejecutados y resultados reales:
+
+- Verificacion completa del 29/09/2026: el candidato ejecuto
+  `python scripts/verificar.py` desde proyecto_base y compartio la salida.
+  Resultado: 48 pruebas aprobadas (35 backend, 3 cliente HTTP, 2 conteos de Next.js
+  y 8 componentes Vite), sin fallos. Ambas compilaciones terminaron correctamente.
+  Se mantuvo una advertencia de deprecacion de Starlette/AnyIO.
 - Desde backend: `..\.venv\Scripts\python.exe -m pytest -q`.
   Resultado al completar P4: 35 pruebas aprobadas (4 iniciales y 31 casos nuevos),
   con una advertencia de deprecacion de Starlette/AnyIO.
@@ -40,15 +46,19 @@ Comandos ejecutados y resultados reales:
   pagina compilada y una API local de prueba en puertos libres: ocho comprobaciones
   correctas de conteos, actualidad, lista vacia, errores y recuperacion.
 Casos manuales revisados:
+
+- El candidato confirmo el funcionamiento de la validacion de P1 en Swagger.
+- El candidato cambio estados y confirmo que los conteos del resumen se actualizaron.
+
 Limitaciones conocidas:
+
 - La persistencia del backend se comprobo reabriendo la aplicacion mediante TestClient;
   el reinicio manual del servidor no fue comprobado por el agente.
-- Las pruebas de componentes y del cliente HTTP usan respuestas simuladas. Falta
-  comprobar Vite y la API juntos en el navegador, recargar tras guardar y revisar
-  el uso con teclado. La compilacion de Vite no sustituye esa comprobacion.
-- Next.js se comprobo por HTTP contra una API local de prueba con respuestas
-  controladas; falta comprobar sus conteos con los pedidos reales del ejercicio
-  y revisar la pagina visualmente en el navegador.
+- Las pruebas de componentes y del cliente HTTP usan respuestas simuladas.
+  Sigue pendiente confirmar la revision manual con teclado.
+- Los errores y la recuperacion de Next.js se comprobaron con una API local de
+  prueba. Falta confirmar la prueba manual deteniendo solo el backend y
+  manteniendo Next.js activo; detener Next.js no comprueba ese comportamiento.
 
 No declarar pruebas aprobadas si no se ejecutaron. No incluir .venv, node_modules,
 .next, dist, bases de datos personales ni secretos en el archivo de entrega.
