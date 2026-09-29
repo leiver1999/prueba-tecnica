@@ -5,7 +5,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from .db import init_db
-from .schemas import PedidoCreate, PedidoOut, EstadoUpdate
+from .schemas import ESTADOS, PedidoCreate, PedidoOut, EstadoUpdate
 from . import repository
 
 DEFAULT_DB = Path(__file__).resolve().parents[1] / 'data' / 'pedidos.sqlite3'
@@ -37,7 +37,8 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
 
     @application.get('/pedidos', response_model=list[PedidoOut])
     def list_pedidos(request: Request, estado: str | None = None):
-        # TODO P2: rechazar estados desconocidos con 400.
+        if estado is not None and estado not in ESTADOS:
+            raise HTTPException(status_code=400, detail='Estado no valido')
         return repository.list_pedidos(request.app.state.db_path, estado)
 
     @application.get('/pedidos/{pedido_id}', response_model=PedidoOut)
@@ -49,14 +50,25 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
 
     @application.post('/pedidos', response_model=PedidoOut, status_code=201)
     def create_pedido(request: Request, payload: PedidoCreate):
-        # TODO P1: corregir la validacion de textos vacios/espacios y normalizar.
+        cliente = payload.cliente.strip()
+        descripcion = payload.descripcion.strip()
+        if not cliente or not descripcion:
+            raise HTTPException(
+                status_code=400,
+                detail='Cliente y descripcion no pueden estar vacios'
+            )
         return repository.create_pedido(
-            request.app.state.db_path, payload.cliente, payload.descripcion)
+            request.app.state.db_path, cliente, descripcion)
 
     @application.patch('/pedidos/{pedido_id}/estado', response_model=PedidoOut)
     def update_estado(request: Request, pedido_id: int, payload: EstadoUpdate):
-        # TODO P3: implementar el contrato del enunciado.
-        raise HTTPException(status_code=501, detail='Actualizacion pendiente de implementar')
+        if payload.estado not in ESTADOS:
+            raise HTTPException(status_code=400, detail='Estado no valido')
+        pedido = repository.update_estado(
+            request.app.state.db_path, pedido_id, payload.estado)
+        if pedido is None:
+            raise HTTPException(status_code=404, detail='Pedido no encontrado')
+        return pedido
 
     return application
 

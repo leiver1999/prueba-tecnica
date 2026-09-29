@@ -5,8 +5,8 @@ def contar_pendientes(pedidos: list[dict]) -> int:
     total = 0
     for pedido in pedidos:
         if pedido['estado'] == 'pendiente':
-            total += 1
-        return total  # Revisar este comportamiento, incluido el caso de lista vacia.
+            total += 1    
+    return total  # Revisar este comportamiento, incluido el caso de lista vacia.
 
 
 if __name__ == '__main__':

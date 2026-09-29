@@ -4,9 +4,13 @@ from .db import connection
 
 
 def list_pedidos(db_path: str | Path, estado: str | None = None) -> list[dict]:
-    # TODO P2: aplicar el filtro cuando estado no sea None.
     with connection(db_path) as conn:
-        rows = conn.execute('SELECT * FROM pedidos ORDER BY id').fetchall()
+        if estado is None:
+            rows = conn.execute('SELECT * FROM pedidos ORDER BY id').fetchall()
+        else:
+            rows = conn.execute(
+                'SELECT * FROM pedidos WHERE estado = ? ORDER BY id', (estado,)
+            ).fetchall()
     return [dict(row) for row in rows]
 
 
@@ -26,4 +30,10 @@ def create_pedido(db_path: str | Path, cliente: str, descripcion: str) -> dict:
     return dict(row)
 
 
-# TODO P3: agregar la operacion de actualizacion de estado.
+def update_estado(db_path: str | Path, pedido_id: int, estado: str) -> dict | None:
+    with connection(db_path) as conn:
+        conn.execute(
+            'UPDATE pedidos SET estado = ? WHERE id = ?', (estado, pedido_id)
+        )
+        row = conn.execute('SELECT * FROM pedidos WHERE id = ?', (pedido_id,)).fetchone()
+    return dict(row) if row is not None else None
