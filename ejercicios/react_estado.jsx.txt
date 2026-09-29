@@ -1,0 +1,11 @@
+// Analiza este fragmento sin IA. No se importa en la aplicacion.
+const [pedidos, setPedidos] = useState([{ id: 1, estado: 'pendiente' }]);
+
+function completar(id) {
+  const pedido = pedidos.find((item) => item.id === id);
+  pedido.estado = 'completado';
+  setPedidos(pedidos);
+}
+
+// Explica el problema, el caso id inexistente y como lo corregirias.
+// Escribe tu propuesta en RESPUESTAS.md. No necesitas configurar otra aplicacion.

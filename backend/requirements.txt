@@ -1,0 +1,7 @@
+# Dependencias directas. preparar.py genera requirements.lock.txt en una venv limpia.
+fastapi==0.128.2
+pydantic==2.13.4
+uvicorn==0.48.0
+httpx==0.28.1
+pytest==9.0.2
+python-dotenv==1.2.2
