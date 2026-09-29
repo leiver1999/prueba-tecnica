@@ -1,4 +1,4 @@
-# Registro de uso de IA de esta prueba
+﻿# Registro de uso de IA de esta prueba
 
 No incluir conversaciones privadas, credenciales ni datos de otras empresas.
 No hace falta copiar todo el chat ni informar razonamientos internos del modelo.

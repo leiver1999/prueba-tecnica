@@ -2,7 +2,7 @@
 
 Nombre o identificador de candidato: Jose Valenciano Herrera
 Fecha: 29/09/2026
-Commit final (si se uso Git): 
+Commit final (si se uso Git): cambios en entrega y uso_IA v3
 
 ## Requisitos
 P1: Implementado; se eliminan los espacios al inicio y al final de cliente y descripcion. Si alguno queda vacio, la API responde 400 sin insertar el pedido
